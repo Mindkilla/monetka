@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class IBStatementParser {
 
-    @Scheduled(cron = Consts.PARSE_JOB_INTERVAL)
+    @Scheduled(fixedRate = Consts.PARSE_JOB_INTERVAL)
     public void doJob() {
         System.out.printf("Yes it works \r\n");
         parseStatements();
