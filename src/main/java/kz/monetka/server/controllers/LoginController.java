@@ -24,7 +24,7 @@ public class LoginController {
 
     @RequestMapping(value = "/greeting", method = RequestMethod.GET)
     public User greeting(@RequestParam(value="id", defaultValue="") String id) {
-        return userService.getOne(id);
+        return userService.findOne(id);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -34,10 +34,11 @@ public class LoginController {
         if ( userService.checkIfExist(login)){
             User dbUser = userService.findByLogin(login);
             if (dbUser.getContent().equals(pass)){
-                answer = new LoginAnswer(HttpStatus.CONFLICT.toString(), "Login is already registered!");
-                return new ResponseEntity(answer, HttpStatus.CONFLICT);
+                String token = userService.createVerificationToken(user);
+                answer = new LoginAnswer(token, HttpStatus.OK.toString(), "");
+                return new ResponseEntity(answer, HttpStatus.OK);
             }
         }
-        return  new ResponseEntity(answer, HttpStatus.CONFLICT);
+        return new ResponseEntity(answer, HttpStatus.UNAUTHORIZED);
     }
 }

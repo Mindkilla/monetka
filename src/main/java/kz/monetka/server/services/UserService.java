@@ -1,15 +1,14 @@
 package kz.monetka.server.services;
 
+import kz.monetka.server.entities.AuthToken;
 import kz.monetka.server.entities.User;
 import org.apache.log4j.Logger;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManagerFactory;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author Andrey Smirnov
@@ -21,43 +20,50 @@ public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class);
 
     @Autowired
-    private LoginRepository loginRepository;
+    private UserRepository userRepository;
+    @Autowired
+    private AuthTokenRepository tokenRepository;
 
-    @Bean
-    public SessionFactory sessionFactory(EntityManagerFactory entityManagerFactory) {
-        return entityManagerFactory.unwrap(SessionFactory.class);
+    public String createVerificationToken(User user) {
+        User dbUser = userRepository.findBylogin(user.getLogin());
+        AuthToken oldToken = tokenRepository.findByUser(dbUser);
+        if(oldToken != null){
+            return oldToken.getToken();
+        }
+        String token = UUID.randomUUID().toString();
+        AuthToken newToken = new AuthToken(dbUser, token);
+        tokenRepository.save(newToken);
+        return token;
     }
 
-    private User findDoAndSave(Long id) {
-        User user = loginRepository.findOne(id);
+    public void deleteAllExpiredSince(Date now) {
+        tokenRepository.deleteAllExpiredSince(now);
+    }
+
+    private User findDoAndSave(String id) {
+        User user = userRepository.findOne(id);
         //do something
-        return loginRepository.save(user);
+        return userRepository.save(user);
     }
 
     public User save(User user) {
-        loginRepository.save(user);
+        userRepository.save(user);
         return user;
     }
 
-    public User create(User user) {
-        user.setSysCreateTime(new Date());
-        loginRepository.save(user);
-        return user;
+    public void create(User user) {
+        userRepository.save(user);
     }
 
-    public User findOne(Long id) {
-        return loginRepository.findOne(id);
-    }
-
-    public User getOne(String id) {
-        return loginRepository.findByUUID(id);
+    public User findOne(String id) {
+        return userRepository.findOne(id);
     }
 
     public boolean checkIfExist(String login) {
-        return loginRepository.exists(login);
+        return userRepository.existsByLogin(login);
     }
 
     public User findByLogin(String login) {
-        return loginRepository.findBylogin(login);
+        return userRepository.findBylogin(login);
     }
 }

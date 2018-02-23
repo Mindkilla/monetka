@@ -8,29 +8,39 @@ import org.apache.log4j.Logger;
  */
 public class LoginAnswer {
     private static final Logger LOGGER = Logger.getLogger(LoginAnswer.class);
-    private String token;
+    private String authToken;
     private String status;
+    private String err;
+
+    public String getErr() {
+        return err;
+    }
+
+    public void setErr(String err) {
+        this.err = err;
+    }
 
     public String getStatus() {
         return status;
     }
 
-    public String getToken() {
-        return token;
+    public String getAuthToken() {
+        return authToken;
     }
 
     public void setStatus(String status) {
         this.status = status;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 
     public LoginAnswer(){}
 
-    public LoginAnswer(String token, String status){
+    public LoginAnswer(String authToken, String status, String err){
         this.status = status;
-        this.token = token;
+        this.authToken = authToken;
+        this.err = err;
     }
 }

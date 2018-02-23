@@ -15,7 +15,7 @@ import java.util.List;
  * @author Andrey Smirnov
  * @date 23.02.2018
  */
-public interface LoginRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, String> {
 
     @Query("select user from User user where user.id = :#{#id}")
     User findByUUID(@Param("id") String id);
@@ -24,16 +24,16 @@ public interface LoginRepository extends JpaRepository<User, Long> {
     User findBylogin(@Param("login") String login);
 
     @Query("SELECT CASE WHEN COUNT(user) > 0 THEN true ELSE false END FROM User user where user.login = :#{#login}")
-    boolean exists(@Param("login") String login);
+    boolean existsByLogin(@Param("login") String login);
 
     @Override
     public <S extends User> S save(S s);
 
     @Override
-    public User findOne(Long l);
+    public User findOne(String l);
 
     @Override
-    public boolean exists(Long l);
+    public boolean exists(String l);
 
     @Override
     public List<User> findAll();
@@ -45,13 +45,13 @@ public interface LoginRepository extends JpaRepository<User, Long> {
     public Page<User> findAll(Pageable pageable);
 
     @Override
-    public List<User> findAll(Iterable<Long> iterable);
+    public List<User> findAll(Iterable<String> iterable);
 
     @Override
     public long count() ;
 
     @Override
-    public void delete(Long l);
+    public void delete(String l);
 
     @Override
     public void delete(User user);
@@ -72,7 +72,7 @@ public interface LoginRepository extends JpaRepository<User, Long> {
     public void deleteAllInBatch();
 
     @Override
-    public User getOne(Long l);
+    public User getOne(String l);
 
     @Override
     public <S extends User> List<S> findAll(Example<S> example, Sort sort);
