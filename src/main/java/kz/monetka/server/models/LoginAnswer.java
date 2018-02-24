@@ -1,4 +1,4 @@
-package kz.monetka.server.entities.pojo;
+package kz.monetka.server.models;
 
 import org.apache.log4j.Logger;
 
@@ -42,5 +42,14 @@ public class LoginAnswer {
         this.status = status;
         this.authToken = authToken;
         this.err = err;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginAnswer{" +
+                "authToken='" + authToken + '\'' +
+                ", status='" + status + '\'' +
+                ", err='" + err + '\'' +
+                '}';
     }
 }

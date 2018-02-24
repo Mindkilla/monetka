@@ -1,7 +1,8 @@
 package kz.monetka.server.controllers;
 
 import kz.monetka.server.entities.User;
-import kz.monetka.server.entities.pojo.LoginAnswer;
+import kz.monetka.server.models.LoginAnswer;
+import kz.monetka.server.models.UserModel;
 import kz.monetka.server.services.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +24,17 @@ public class LoginController {
     private static final Logger LOGGER = Logger.getLogger(LoginController.class);
 
     @RequestMapping(value = "/greeting", method = RequestMethod.GET)
-    public User greeting(@RequestParam(value="id", defaultValue="") String id) {
+    public User greeting(@RequestParam(value = "id", defaultValue = "") String id) {
         return userService.findOne(id);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity post(@RequestBody User user) {
-        String login = user.getLogin();
-        String pass = user.getContent();
-        if ( userService.checkIfExist(login)){
-            User dbUser = userService.findByLogin(login);
-            if (dbUser.getContent().equals(pass)){
-                String token = userService.createVerificationToken(user);
-                answer = new LoginAnswer(token, HttpStatus.OK.toString(), "");
-                return new ResponseEntity(answer, HttpStatus.OK);
-            }
+    public ResponseEntity post(@RequestBody UserModel userModel) {
+        String login = userModel.getLogin();
+        if (userService.checkIfExist(login) && userService.verifyUser(userModel)) {
+            String token = userService.createVerificationToken(login);
+            answer = new LoginAnswer(token, HttpStatus.OK.toString(), "");
+            return new ResponseEntity(answer, HttpStatus.OK);
         }
         return new ResponseEntity(answer, HttpStatus.UNAUTHORIZED);
     }

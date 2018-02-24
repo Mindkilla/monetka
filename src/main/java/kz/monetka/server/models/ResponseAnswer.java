@@ -1,4 +1,4 @@
-package kz.monetka.server.entities.pojo;
+package kz.monetka.server.models;
 
 import org.apache.log4j.Logger;
 
@@ -33,5 +33,13 @@ public class ResponseAnswer {
     public ResponseAnswer(String status, String error){
         this.status = status;
         this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        return "ResponseAnswer{" +
+                "status='" + status + '\'' +
+                ", error='" + error + '\'' +
+                '}';
     }
 }

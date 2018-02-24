@@ -1,5 +1,7 @@
 package kz.monetka.server.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -14,6 +16,7 @@ public class AuthToken {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @JsonIgnore
     private String token;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
