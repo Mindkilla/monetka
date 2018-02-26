@@ -86,7 +86,27 @@ public class PaymentService {
     }
 
     public Object updatePayment(PaymentModel incPayment, String token) {
-        return new Object();
+        Payment payment = null;
+        PaymentModel outModel= null;
+        if(checkToken(token)){
+            String userId = userService.findByToken(token).getUser().getId();
+            payment = updPayment(incPayment, userId);
+            outModel = new PaymentModel(paymentRepository.saveAndFlush(payment));
+            outModel.setId(RestApiUtils.encodeId(outModel.getId(), userId));
+        }
+        return outModel;
+    }
+
+    public Object delPayment(PaymentModel incPayment, String token) {
+        PaymentModel outModel= null;
+        if(checkToken(token)){
+            String userId = userService.findByToken(token).getUser().getId();
+            String decodedId = RestApiUtils.decodeId(incPayment.getId(), userId);
+            paymentRepository.delete(decodedId);
+            return new ResponseEntity(new ResponseAnswer(HttpStatus.OK.toString(), ""), HttpStatus.OK);
+
+        }
+        return new ResponseEntity(new ResponseAnswer(HttpStatus.BAD_REQUEST.toString(), "Invalid token"), HttpStatus.BAD_REQUEST);
     }
 
     private boolean checkToken(String token) {
@@ -102,6 +122,18 @@ public class PaymentService {
         payment.setArchiveTime(model.getArchiveTime());
         payment.setDeleteTime(model.getDeleteTime());
         payment.setVersion(model.getVersion());
+        return payment;
+    }
+
+    private Payment updPayment(PaymentModel model, String userId) {
+        String decodedId = RestApiUtils.decodeId(model.getId(), userId);
+        Payment payment = paymentRepository.findByIdAndPayerId(decodedId, userId);
+        if (model.getAmount()!=null) {
+            payment.setAmount(model.getAmount());
+        }
+        if (model.getDocDate()!=null) {
+            payment.setDocDate(model.getDocDate());
+        }
         return payment;
     }
 }

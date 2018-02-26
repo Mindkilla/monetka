@@ -24,7 +24,7 @@ public class PaymentsController {
         return paymentService.findByPayerId(token);
     }
 
-    @RequestMapping(value = "/payment/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/payment/get/{id}", method = RequestMethod.GET)
     public Object getOne(@PathVariable("id") String id, @RequestHeader(name = HEADER) String token) {
         return paymentService.findById(id, token);
     }
@@ -37,5 +37,10 @@ public class PaymentsController {
     @RequestMapping(value = "/payment/update", method = RequestMethod.PATCH)
     public Object updatePayment(@RequestBody PaymentModel incPayment, @RequestHeader(name = HEADER) String token) {
         return paymentService.updatePayment(incPayment, token);
+    }
+
+    @RequestMapping(value = "/payment/delete", method = RequestMethod.DELETE)
+    public Object delPayment(@RequestBody PaymentModel incPayment, @RequestHeader(name = HEADER) String token) {
+        return paymentService.delPayment(incPayment, token);
     }
 }

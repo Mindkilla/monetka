@@ -1,6 +1,5 @@
 package kz.monetka.server.controllers;
 
-import kz.monetka.server.entities.User;
 import kz.monetka.server.models.ErrorMsg;
 import kz.monetka.server.models.LoginAnswer;
 import kz.monetka.server.models.UserModel;
@@ -10,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.stream.Collectors;
@@ -27,11 +29,6 @@ public class LoginController {
     LoginAnswer answer;
 
     private static final Logger LOGGER = Logger.getLogger(LoginController.class);
-
-    @RequestMapping(value = "/greeting", method = RequestMethod.GET)
-    public User greeting(@RequestParam(value = "id", defaultValue = "") String id) {
-        return userService.findOne(id);
-    }
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
     public ResponseEntity post(@Valid @RequestBody UserModel userModel, Errors errors) {
