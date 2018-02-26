@@ -13,8 +13,8 @@ public class UserModel {
 
     @NotNull
     @NotEmpty
-    @JsonProperty("pass")
-    private String pass;
+    @JsonProperty("password")
+    private String password;
 
     public String getLogin() {
         return login;
@@ -24,27 +24,27 @@ public class UserModel {
         this.login = login;
     }
 
-    public String getPass() {
-        return pass;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public UserModel() {
     }
 
-    public UserModel(String login, String pass) {
+    public UserModel(String login, String password) {
         this.login = login;
-        this.pass = pass;
+        this.password = password;
     }
 
     @Override
     public String toString() {
         return "UserModel{" +
                 "login='" + login + '\'' +
-                ", pass='" + pass + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

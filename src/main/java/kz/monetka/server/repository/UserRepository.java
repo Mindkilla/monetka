@@ -1,4 +1,4 @@
-package kz.monetka.server.services;
+package kz.monetka.server.repository;
 
 import kz.monetka.server.entities.User;
 import org.springframework.data.domain.Example;

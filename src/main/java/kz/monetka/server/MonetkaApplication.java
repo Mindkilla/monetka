@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class MonetkaApplication {
 
-
 	public static void main(String[] args) {
         new SpringApplicationBuilder(MonetkaApplication.class).bannerMode(Banner.Mode.OFF).run(args);
 	}

@@ -1,4 +1,4 @@
-package kz.monetka.server.services;
+package kz.monetka.server.repository;
 
 import kz.monetka.server.entities.AuthToken;
 import kz.monetka.server.entities.User;
@@ -13,6 +13,8 @@ public interface AuthTokenRepository extends JpaRepository<AuthToken, Long> {
     AuthToken findByToken(String token);
 
     AuthToken findByUser(User user);
+
+    boolean existsByToken(String login);
 
     void deleteByExpiryDateLessThan(Date now);
 

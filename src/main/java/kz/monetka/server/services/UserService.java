@@ -3,6 +3,8 @@ package kz.monetka.server.services;
 import kz.monetka.server.entities.AuthToken;
 import kz.monetka.server.entities.User;
 import kz.monetka.server.models.UserModel;
+import kz.monetka.server.repository.AuthTokenRepository;
+import kz.monetka.server.repository.UserRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,6 +45,10 @@ public class UserService {
         tokenRepository.deleteAllExpiredSince(now);
     }
 
+    public AuthToken findByToken(String token) {
+         return tokenRepository.findByToken(token);
+    }
+
     private User findDoAndSave(String id) {
         User user = userRepository.findOne(id);
         //do something
@@ -56,8 +62,8 @@ public class UserService {
 
     public void create(User user) {
         passwordEncoder = new BCryptPasswordEncoder();
-        String hashPass = passwordEncoder.encode(user.getContent());
-        user.setContent(hashPass);
+        String hashPass = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashPass);
         userRepository.save(user);
     }
 
@@ -69,14 +75,18 @@ public class UserService {
         return userRepository.existsByLogin(login);
     }
 
+    public boolean checkToken(String token) {
+        return tokenRepository.existsByToken(token);
+    }
+
     public String findPassByLogin(String login) {
         User user = userRepository.findBylogin(login);
-        return user.getContent();
+        return user.getPassword();
     }
 
     public boolean verifyUser(UserModel userModel) {
         String userPass = findPassByLogin(userModel.getLogin());
         passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.matches(userModel.getPass(), userPass);
+        return passwordEncoder.matches(userModel.getPassword(), userPass);
     }
 }

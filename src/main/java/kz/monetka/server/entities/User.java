@@ -3,10 +3,12 @@ package kz.monetka.server.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -19,18 +21,22 @@ import java.util.Date;
 @Table(name = "MONETKA_USERS")
 public class User extends BaseEntity {
 
+    @NotNull
+    @NotEmpty
     @JsonProperty("login")
     private String login;
 
+    @NotNull
+    @NotEmpty
     @Column(nullable = false)
-    @JsonProperty("content")
+    @JsonProperty("password")
     @JsonIgnore
-    private String content;
+    private String password;
     private boolean confirmed;
 
-    public User(String login, String content) {
+    public User(String login, String password) {
         this.login = login;
-        this.content = content;
+        this.password = password;
         this.confirmed = false;
         this.setSysCreateTime(new Date());
     }
@@ -47,8 +53,8 @@ public class User extends BaseEntity {
         return login;
     }
 
-    public String getContent() {
-        return content;
+    public String getPassword() {
+        return password;
     }
 
     public User() {
@@ -58,7 +64,7 @@ public class User extends BaseEntity {
         this.login = login;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
