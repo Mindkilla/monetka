@@ -17,6 +17,9 @@ public class TokensCleanerTask {
     @Autowired
     private UserService userService;
 
+    /**
+     * Задача очищающая старые токены пользователей
+     */
     @Scheduled(fixedRate = Consts.PARSE_JOB_INTERVAL)
     public void cleanTokens() {
         LOGGER.info("Start TokensCleanerTask...");

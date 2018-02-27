@@ -73,6 +73,13 @@ public class PaymentService {
         return new ResponseEntity(new ResponseAnswer(HttpStatus.BAD_REQUEST.toString(), "Invalid token"), HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Создание нового платежа
+     * @param  incPayment  входящая модель платежа
+     * @param  token  Токен пользователя полученный при входе
+     * @return      возвращает модель созданного платежа PaymentModel
+     * @see         PaymentModel
+     */
     public Object newPayment(PaymentModel incPayment, String token) {
         Payment payment = null;
         PaymentModel outModel= null;
@@ -85,6 +92,13 @@ public class PaymentService {
         return outModel;
     }
 
+    /**
+     * Обновление существующего платежа
+     * @param  incPayment  входящая модель платежа
+     * @param  token  Токен пользователя полученный при входе
+     * @return      возвращает модель обновленного платежа PaymentModel
+     * @see         PaymentModel
+     */
     public Object updatePayment(PaymentModel incPayment, String token) {
         Payment payment = null;
         PaymentModel outModel= null;
@@ -97,6 +111,13 @@ public class PaymentService {
         return outModel;
     }
 
+    /**
+     * Удаление существующего платежа
+     * @param  incPayment  входящая модель платежа
+     * @param  token  Токен пользователя полученный при входе
+     * @return      возвращает ResponseEntity со статусом HttpStatus.OK или HttpStatus.BAD_REQUEST
+     * @see         ResponseEntity
+     */
     public Object delPayment(PaymentModel incPayment, String token) {
         PaymentModel outModel= null;
         if(checkToken(token)){
@@ -109,10 +130,17 @@ public class PaymentService {
         return new ResponseEntity(new ResponseAnswer(HttpStatus.BAD_REQUEST.toString(), "Invalid token"), HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Проверка что токен существует
+     * @see UserService
+     */
     private boolean checkToken(String token) {
         return userService.checkToken(token);
     }
 
+    /**
+     * Заполняет сущность Платежа из модели
+     */
     private Payment fillPayment(PaymentModel model, String userId) {
         Payment payment = new Payment();
         payment.setPayerId(userId);
@@ -125,6 +153,9 @@ public class PaymentService {
         return payment;
     }
 
+    /**
+     * Возвращает сущность Платежа с изменением даты и суммы
+     */
     private Payment updPayment(PaymentModel model, String userId) {
         String decodedId = RestApiUtils.decodeId(model.getId(), userId);
         Payment payment = paymentRepository.findByIdAndPayerId(decodedId, userId);

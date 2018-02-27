@@ -18,6 +18,12 @@ public class RestApiUtils {
     @Autowired
     private static UserService userService;
 
+    /**
+     * Шифрует ID платежей и не только
+     * @param  id     ID платежа
+     * @param  userId  ID пользователя
+     * @return  возвращает зашифрованый ID(String)
+     */
     public static String encodeId(String id, String userId) {
         // идентификатор пользователя
         //String userId = getUserId(token);
@@ -26,6 +32,12 @@ public class RestApiUtils {
         return Base64.encodeBase64URLSafeString(encodedId);
     }
 
+    /**
+     * Расшифровка ID платежей и не только
+     * @param  encoded зашифрованный ID платежа
+     * @param  userId  ID пользователя
+     * @return  возвращает ID(String)
+     */
     public static String decodeId(String encoded, String userId) {
         // идентификатор пользователя
         byte[] decodeBase64 = Base64.decodeBase64(encoded);
@@ -38,6 +50,12 @@ public class RestApiUtils {
         return userService.findByToken(token).getUser().getId();
     }
 
+    /**
+     * Алгоритм шифрования на основе xor
+     * @param  value что шифруем
+     * @param  key  чем шифруем
+     * @return  возвращает byte[]
+     */
     private static byte[] xor(byte[] value, byte[] key) {
         int valueLength = value.length;
         byte[] res = new byte[valueLength];

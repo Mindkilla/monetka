@@ -29,6 +29,12 @@ public class UserService {
     private AuthTokenRepository tokenRepository;
     private BCryptPasswordEncoder passwordEncoder;
 
+    /**
+     * Создает и возвращает токен для доступа к API
+     * @param  login  Логин пользователя
+     * @return  возвращает новый или уже имещийся токен пользователя
+     * @see         AuthToken
+     */
     public String createVerificationToken(String login) {
         User dbUser = userRepository.findBylogin(login);
         AuthToken oldToken = tokenRepository.findByUser(dbUser);
@@ -41,10 +47,16 @@ public class UserService {
         return token;
     }
 
+    /**
+     * Удаляет протухшие AuthToken-ы
+     */
     public void deleteAllExpiredSince(Date now) {
         tokenRepository.deleteAllExpiredSince(now);
     }
 
+    /**
+     * Поиск AuthToken по значению token
+     */
     public AuthToken findByToken(String token) {
          return tokenRepository.findByToken(token);
     }
@@ -60,6 +72,10 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Создание нового пользователя с зашифрованным паролем
+     * @see User
+     */
     public void create(User user) {
         passwordEncoder = new BCryptPasswordEncoder();
         String hashPass = passwordEncoder.encode(user.getPassword());
@@ -71,19 +87,31 @@ public class UserService {
         return userRepository.findOne(id);
     }
 
+    /**
+     * Проверка что пользователь с таким логином существует
+     */
     public boolean checkIfExist(String login) {
         return userRepository.existsByLogin(login);
     }
 
+    /**
+     * Проверка что токен существует
+     */
     public boolean checkToken(String token) {
         return tokenRepository.existsByToken(token);
     }
 
+    /**
+     * Получаем пароль пользователя
+     */
     public String findPassByLogin(String login) {
         User user = userRepository.findBylogin(login);
         return user.getPassword();
     }
 
+    /**
+     * Проверяем пароль из запроса с паролем БД
+     */
     public boolean verifyUser(UserModel userModel) {
         String userPass = findPassByLogin(userModel.getLogin());
         passwordEncoder = new BCryptPasswordEncoder();
