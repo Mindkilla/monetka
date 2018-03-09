@@ -1,4 +1,4 @@
-package kz.monetka.server.entities;
+package kz.monetka.server.entities.login;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

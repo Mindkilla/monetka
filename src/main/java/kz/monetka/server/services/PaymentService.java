@@ -38,18 +38,21 @@ public class PaymentService {
      * @return      возвращает список всех платежей PaymentsModel
      * @see         PaymentsModel
      */
-    public PaymentsModel findByPayerId(String token){
-        String userId = userService.findByToken(token).getUser().getId();
-        PaymentsModel outgoingModel = new PaymentsModel();
-        List<Payment> payments = paymentRepository.findByPayerId(userId);
-        List<PaymentModel> paymentModels = new LinkedList<>();
-        payments.forEach(payment ->
-                paymentModels.add(new PaymentModel(payment))
-        );
-        paymentModels.forEach(payment ->
-                payment.setId(RestApiUtils.encodeId(payment.getId(), userId)));
-        outgoingModel.setPayments(paymentModels);
-        return outgoingModel;
+    public Object findByPayerId(String token) {
+        if (checkToken(token)) {
+            String userId = userService.findByToken(token).getUser().getId();
+            PaymentsModel outgoingModel = new PaymentsModel();
+            List<Payment> payments = paymentRepository.findByPayerId(userId);
+            List<PaymentModel> paymentModels = new LinkedList<>();
+            payments.forEach(payment ->
+                    paymentModels.add(new PaymentModel(payment))
+            );
+            paymentModels.forEach(payment ->
+                    payment.setId(RestApiUtils.encodeId(payment.getId(), userId)));
+            outgoingModel.setPayments(paymentModels);
+            return outgoingModel;
+        }
+        return new ResponseEntity(new ResponseAnswer(HttpStatus.BAD_REQUEST.toString(), "Invalid token"), HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -113,16 +116,15 @@ public class PaymentService {
 
     /**
      * Удаление существующего платежа
-     * @param  incPayment  входящая модель платежа
+     * @param  id     зашифрованный ID платежа
      * @param  token  Токен пользователя полученный при входе
      * @return      возвращает ResponseEntity со статусом HttpStatus.OK или HttpStatus.BAD_REQUEST
      * @see         ResponseEntity
      */
-    public Object delPayment(PaymentModel incPayment, String token) {
-        PaymentModel outModel= null;
+    public Object delPayment(String id, String token) {
         if(checkToken(token)){
             String userId = userService.findByToken(token).getUser().getId();
-            String decodedId = RestApiUtils.decodeId(incPayment.getId(), userId);
+            String decodedId = RestApiUtils.decodeId(id, userId);
             paymentRepository.delete(decodedId);
             return new ResponseEntity(new ResponseAnswer(HttpStatus.OK.toString(), ""), HttpStatus.OK);
 
@@ -144,6 +146,7 @@ public class PaymentService {
     private Payment fillPayment(PaymentModel model, String userId) {
         Payment payment = new Payment();
         payment.setPayerId(userId);
+        //payment.setCategory(model.getCategory());
         payment.setSysCreateTime(new Date());
         payment.setAmount(model.getAmount());
         payment.setDocDate(model.getDocDate());
@@ -164,6 +167,9 @@ public class PaymentService {
         }
         if (model.getDocDate()!=null) {
             payment.setDocDate(model.getDocDate());
+        }
+        if (model.getCategory()!=null) {
+           // payment.setCategory(model.getCategory());
         }
         return payment;
     }

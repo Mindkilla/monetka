@@ -1,6 +1,6 @@
 package kz.monetka.server.repository;
 
-import kz.monetka.server.entities.User;
+import kz.monetka.server.entities.login.User;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -21,6 +21,8 @@ public class PaymentModel {
     private String payerId;
     private Date docDate;
     private BigDecimal amount;
+    private String category;
+    private String categoryIcon;
 
     public PaymentModel() {
     }
@@ -34,6 +36,22 @@ public class PaymentModel {
         this.payerId = payment.getPayerId();
         this.docDate = payment.getDocDate();
         this.amount = payment.getAmount();
+        if (payment.getCategory() != null){
+            this.category = payment.getCategory().getName();
+            this.categoryIcon = payment.getCategory().getIcon();
+        }
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getCategoryIcon() {
+        return categoryIcon;
     }
 
     public String getId() {

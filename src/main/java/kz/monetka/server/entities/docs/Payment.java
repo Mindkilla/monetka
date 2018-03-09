@@ -2,13 +2,12 @@ package kz.monetka.server.entities.docs;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import kz.monetka.server.entities.BaseEntity;
+import kz.monetka.server.entities.Comment;
 import kz.monetka.server.utils.FieldSize;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Index;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -29,8 +28,21 @@ public class Payment extends BaseEntity {
     @Column
     private Date docDate;
 
+    @Comment("Категория платежа")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "categoryId")
+    private PaymentCategory category;
+
     @Column(precision = FieldSize.AMOUNT_PRECISION, scale = FieldSize.AMOUNT_SCALE)
     private BigDecimal amount;
+
+    public PaymentCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(PaymentCategory category) {
+        this.category = category;
+    }
 
     public String getPayerId() {
         return payerId;

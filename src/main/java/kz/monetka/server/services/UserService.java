@@ -1,7 +1,8 @@
 package kz.monetka.server.services;
 
-import kz.monetka.server.entities.AuthToken;
-import kz.monetka.server.entities.User;
+import kz.monetka.server.entities.login.AuthToken;
+import kz.monetka.server.entities.login.User;
+import kz.monetka.server.models.ChangePass;
 import kz.monetka.server.models.UserModel;
 import kz.monetka.server.repository.AuthTokenRepository;
 import kz.monetka.server.repository.UserRepository;
@@ -101,6 +102,10 @@ public class UserService {
         return tokenRepository.existsByToken(token);
     }
 
+    public boolean checkUserToken(String token) {
+        return tokenRepository.existsByToken(token);
+    }
+
     /**
      * Получаем пароль пользователя
      */
@@ -116,5 +121,39 @@ public class UserService {
         String userPass = findPassByLogin(userModel.getLogin());
         passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.matches(userModel.getPassword(), userPass);
+    }
+
+    public boolean logout(String login, String token) {
+        if (checkIfExist(login) && checkToken(token)) {
+            User dbUser = userRepository.findBylogin(login);
+            AuthToken dbToken = tokenRepository.findByUser(dbUser);
+            if (dbToken.getToken().equals(token)) {
+                tokenRepository.delete(dbToken);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean remindPass(String login) {
+        if (checkIfExist(login)) {
+            User dbUser = userRepository.findBylogin(login);
+            //emailService.sendReminder(dbUser)
+            return true;
+        }
+        return false;
+    }
+
+    public boolean changePass(ChangePass model, String token) {
+        UserModel userModel = new UserModel(model.getLogin(), model.getPassword());
+        if (checkIfExist(userModel.getLogin()) && verifyUser(userModel) && checkToken(token)) {
+            User dbUser = userRepository.findBylogin(userModel.getLogin());
+            passwordEncoder = new BCryptPasswordEncoder();
+            String hashPass = passwordEncoder.encode(model.getNewPassword());
+            dbUser.setPassword(hashPass);
+            userRepository.save(dbUser);
+            return true;
+        }
+        return false;
     }
 }

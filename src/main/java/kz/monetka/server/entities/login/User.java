@@ -1,7 +1,8 @@
-package kz.monetka.server.entities;
+package kz.monetka.server.entities.login;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import kz.monetka.server.entities.BaseEntity;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 

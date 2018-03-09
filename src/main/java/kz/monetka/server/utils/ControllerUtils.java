@@ -1,8 +1,12 @@
 package kz.monetka.server.utils;
 
+import kz.monetka.server.models.ErrorMsg;
 import kz.monetka.server.models.ResponseAnswer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+
+import java.util.stream.Collectors;
 
 public class ControllerUtils {
 
@@ -17,5 +21,17 @@ public class ControllerUtils {
         }
         answer = new ResponseAnswer(HttpStatus.OK.toString(), "");
         return new ResponseEntity(answer, HttpStatus.OK);
+    }
+
+    public static ResponseEntity showErrors(Errors errors) {
+        ErrorMsg result = new ErrorMsg();
+        //If error, just return a 400 bad request, along with the error message
+        // get all errors
+        result.setMsg(errors.getFieldErrors()
+                .stream()
+                .map(x -> x.getField() + " " + x.getDefaultMessage())
+                .collect(Collectors.joining(",")));
+
+        return ResponseEntity.badRequest().body(result);
     }
 }

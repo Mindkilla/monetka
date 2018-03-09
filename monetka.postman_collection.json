@@ -1,0 +1,222 @@
+{
+	"variables": [],
+	"info": {
+		"name": "monetka",
+		"_postman_id": "86d47a24-be08-2c1a-4a67-fde26b290478",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"description": "",
+			"item": [
+				{
+					"name": "registerUser",
+					"request": {
+						"url": "http://localhost:8080/user/register",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"login\":\"user\",\n\t\"password\":\"qwerty\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"url": "http://localhost:8080/user/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"login\":\"user\",\n\t\"password\": \"qwerty\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "changePass",
+					"request": {
+						"url": "http://localhost:8080/user/changePass",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "f6655859-4381-4cb9-b873-c33724c496ed",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"login\":\"user\",\n\t\"password\":\"qwerty\",\n\t\"newPassword\":\"test\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"url": "http://localhost:8080/user/logout/user",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Auth-Token",
+								"value": "f6655859-4381-4cb9-b873-c33724c496ed",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payments",
+			"description": "",
+			"item": [
+				{
+					"name": "pay_new",
+					"request": {
+						"url": "http://localhost:8080/payment",
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "f6655859-4381-4cb9-b873-c33724c496ed",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"amount\":16523.99,\n\t\"docDate\":\"2017-08-22T06:11:00.000Z\",\n\t\"version\":1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "pay_getOne",
+					"request": {
+						"url": "http://localhost:8080/payment/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFZUQdRBgAAAAE",
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "f6655859-4381-4cb9-b873-c33724c496ed",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "pay_getAll",
+					"request": {
+						"url": "http://localhost:8080/payment/getAll",
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "f6655859-4381-4cb9-b873-c33724c496ed",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "pay_update",
+					"request": {
+						"url": "http://localhost:8080/payment",
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "f6655859-4381-4cb9-b873-c33724c496ed",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":\"AAAAAAAAAAAAA1QCVQJVAAAAAANUAlVXVANdCwAAAAM\",\n\t\"amount\":999.89\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "pay_delete",
+					"request": {
+						"url": "http://localhost:8080/payment/AAAAAAAAAAAAA1QCVQJVAAAAAANUAlVXVANdCwAAAAM",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "f6655859-4381-4cb9-b873-c33724c496ed",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
