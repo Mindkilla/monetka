@@ -23,6 +23,9 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("select user from User user where user.login = :#{#login}")
     User findBylogin(@Param("login") String login);
 
+    @Query("SELECT CASE WHEN user.confirmed = true THEN true ELSE false END FROM User user where user.login = :#{#login}")
+    boolean checkConfirmed(@Param("login") String login);
+
     @Query("SELECT CASE WHEN COUNT(user) > 0 THEN true ELSE false END FROM User user where user.login = :#{#login}")
     boolean existsByLogin(@Param("login") String login);
 

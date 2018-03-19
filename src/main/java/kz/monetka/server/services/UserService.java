@@ -136,8 +136,8 @@ public class UserService {
     }
 
     public boolean remindPass(String login) {
-        if (checkIfExist(login)) {
-            User dbUser = userRepository.findBylogin(login);
+        User dbUser = userRepository.findBylogin(login);
+        if (dbUser != null && dbUser.isConfirmed()) {
             //emailService.sendReminder(dbUser)
             return true;
         }
