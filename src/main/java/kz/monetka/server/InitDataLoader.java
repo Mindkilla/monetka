@@ -17,16 +17,16 @@ public class InitDataLoader {
     }
 
     private void loadUsers() {
-        if (!userRepository.existsByLogin("user")){
-            userRepository.save(new User("user", "pass"));
+        if (!userRepository.existsByLogin("test1")){
+            userRepository.save(new User("test1", "pass"));
         }
-        if (!userRepository.existsByLogin("admin")){
-            userRepository.save(new User("admin", "pass"));
+        if (!userRepository.existsByLogin("test2")){
+            userRepository.save(new User("test2", "pass"));
         }
     }
 
     private void loadPaymentTypes() {
         //example
-        userRepository.save(new User("user", "pass"));
+        //userRepository.save(new User("user", "pass"));
     }
 }

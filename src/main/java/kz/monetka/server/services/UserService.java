@@ -24,6 +24,8 @@ import java.util.UUID;
 public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class);
 
+    private final String TOKEN_SEP = ":";
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -33,19 +35,23 @@ public class UserService {
     /**
      * Создает и возвращает токен для доступа к API
      * @param  login  Логин пользователя
-     * @return  возвращает новый или уже имещийся токен пользователя
+     * @return  возвращает новый или уже имещийся токен пользователя в формате <ID пользователя>:<ТОКЕН>
      * @see         AuthToken
      */
     public String createVerificationToken(String login) {
         User dbUser = userRepository.findBylogin(login);
         AuthToken oldToken = tokenRepository.findByUser(dbUser);
         if(oldToken != null){
-            return oldToken.getToken();
+            return dbUser.getId() + TOKEN_SEP + oldToken.getToken();
         }
         String token = UUID.randomUUID().toString();
         AuthToken newToken = new AuthToken(dbUser, token);
         tokenRepository.save(newToken);
-        return token;
+        return dbUser.getId() + TOKEN_SEP + token;
+    }
+
+    private String realToken(String token) {
+        return token.split(TOKEN_SEP)[1];
     }
 
     /**
@@ -59,7 +65,7 @@ public class UserService {
      * Поиск AuthToken по значению token
      */
     public AuthToken findByToken(String token) {
-         return tokenRepository.findByToken(token);
+        return tokenRepository.findByToken(realToken(token));
     }
 
     private User findDoAndSave(String id) {
@@ -99,7 +105,8 @@ public class UserService {
      * Проверка что токен существует
      */
     public boolean checkToken(String token) {
-        return tokenRepository.existsByToken(token);
+        String userId = token.split(TOKEN_SEP)[0];
+        return tokenRepository.existsByTokenAndUserId(realToken(token), userId);
     }
 
     public boolean checkUserToken(String token) {

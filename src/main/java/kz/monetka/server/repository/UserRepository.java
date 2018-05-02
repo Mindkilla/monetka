@@ -17,6 +17,8 @@ import java.util.List;
  */
 public interface UserRepository extends JpaRepository<User, String> {
 
+    boolean existsById(String id);
+
     @Query("select user from User user where user.id = :#{#id}")
     User findByUUID(@Param("id") String id);
 

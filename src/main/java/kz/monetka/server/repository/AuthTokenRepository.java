@@ -16,6 +16,8 @@ public interface AuthTokenRepository extends JpaRepository<AuthToken, Long> {
 
     boolean existsByToken(String token);
 
+    boolean existsByTokenAndUserId(String token, String userId);
+
     void deleteByExpiryDateLessThan(Date now);
 
     @Modifying
