@@ -5,6 +5,9 @@ import kz.monetka.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/*
+* Preload скрипты
+* */
 @Component
 public class InitDataLoader {
     private UserRepository userRepository;
@@ -17,11 +20,11 @@ public class InitDataLoader {
     }
 
     private void loadUsers() {
-        if (!userRepository.existsByLogin("test1")){
-            userRepository.save(new User("test1", "pass"));
+        if (!userRepository.existsByLogin("test1@123.12")) {
+            userRepository.save(new User("test1@123.12", "pass"));
         }
-        if (!userRepository.existsByLogin("test2")){
-            userRepository.save(new User("test2", "pass"));
+        if (!userRepository.existsByLogin("test2@123.12")) {
+            userRepository.save(new User("test2@123.12", "pass"));
         }
     }
 

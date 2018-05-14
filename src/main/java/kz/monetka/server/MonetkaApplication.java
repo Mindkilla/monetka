@@ -31,6 +31,9 @@ public class MonetkaApplication {
 		};
 	}
 
+	/*
+	* dataSource из context.xml
+	*/
 	@Bean(value = "datasource")
 	public DataSource dataSource() {
 		JndiDataSourceLookup dataSource = new JndiDataSourceLookup();
