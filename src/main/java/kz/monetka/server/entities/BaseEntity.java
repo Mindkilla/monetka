@@ -10,10 +10,10 @@ import java.util.Date;
 public abstract class BaseEntity implements Serializable {
     @Comment("Идентификатор объекта")
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Basic(optional = false)
-    @Column(name = "id",unique=true, nullable = false, length = 36)
+    @Column(name = "id", unique = true, nullable = false, length = 36)
     private String id;
     @Version
     @Comment("Системная (hibernate) версия объекта")
@@ -44,7 +44,7 @@ public abstract class BaseEntity implements Serializable {
     }
 
     public void setVersion(Integer version) {
-        if(version == null) {
+        if (version == null) {
             this.version = Integer.valueOf(0);
         } else {
             this.version = version;
@@ -77,17 +77,17 @@ public abstract class BaseEntity implements Serializable {
     }
 
     public boolean equals(Object o) {
-        if(this == o) {
+        if (this == o) {
             return true;
-        } else if(!(o instanceof BaseEntity)) {
+        } else if (!(o instanceof BaseEntity)) {
             return false;
         } else {
-            BaseEntity that = (BaseEntity)o;
-            if(this.id != null) {
-                if(!this.id.equals(that.id)) {
+            BaseEntity that = (BaseEntity) o;
+            if (this.id != null) {
+                if (!this.id.equals(that.id)) {
                     return false;
                 }
-            } else if(that.id != null) {
+            } else if (that.id != null) {
                 return false;
             }
 
@@ -96,7 +96,7 @@ public abstract class BaseEntity implements Serializable {
     }
 
     public int hashCode() {
-        return this.id != null?this.id.hashCode():0;
+        return this.id != null ? this.id.hashCode() : 0;
     }
 
     public String toString() {

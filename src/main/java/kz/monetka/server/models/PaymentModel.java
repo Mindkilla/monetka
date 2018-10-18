@@ -36,7 +36,7 @@ public class PaymentModel {
         this.payerId = payment.getPayerId();
         this.docDate = payment.getDocDate();
         this.amount = payment.getAmount();
-        if (payment.getCategory() != null){
+        if (payment.getCategory() != null) {
             this.category = payment.getCategory().getName();
             this.categoryIcon = payment.getCategory().getIcon();
         }

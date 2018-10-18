@@ -1,7 +1,6 @@
 package kz.monetka.server.jobs;
 
 import kz.monetka.server.services.UserService;
-import kz.monetka.server.utils.Consts;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,7 +19,7 @@ public class TokensCleanerTask {
     /**
      * Задача очищающая старые токены пользователей
      */
-    @Scheduled(fixedRate = Consts.PARSE_JOB_INTERVAL)
+    @Scheduled(fixedRate = 120000)
     public void cleanTokens() {
         LOGGER.info("Start TokensCleanerTask...");
         Date now = Date.from(Instant.now());

@@ -34,9 +34,10 @@ public class PaymentService {
     /**
      * Возвращает все платежи пользователя по AuthToken-у,
      * ID платежей кодирутся
-     * @param  token  Токен пользователя полученный при входе
-     * @return      возвращает список всех платежей PaymentsModel
-     * @see         PaymentsModel
+     *
+     * @param token Токен пользователя полученный при входе
+     * @return возвращает список всех платежей PaymentsModel
+     * @see PaymentsModel
      */
     public Object findByPayerId(String token) {
         if (checkToken(token)) {
@@ -57,17 +58,18 @@ public class PaymentService {
 
     /**
      * Возвращает конкретный платеж пользователя по его кодированному ID и AuthToken-у
-     * @param  id     Кодированный ID платежа
-     * @param  token  Токен пользователя полученный при входе
-     * @return      возвращает запрашиваемый платеж PaymentModel либо ResponseAnswer с ошибкой
-     * @see         PaymentModel
+     *
+     * @param id    Кодированный ID платежа
+     * @param token Токен пользователя полученный при входе
+     * @return возвращает запрашиваемый платеж PaymentModel либо ResponseAnswer с ошибкой
+     * @see PaymentModel
      */
-    public Object findById(String id, String token){
-        if(checkToken(token)){
+    public Object findById(String id, String token) {
+        if (checkToken(token)) {
             String userId = userService.findByToken(token).getUser().getId();
             String decodedId = RestApiUtils.decodeId(id, userId);
             Payment payment = paymentRepository.findByIdAndPayerId(decodedId, userId);
-            if (payment != null){
+            if (payment != null) {
                 PaymentModel paymentModel = new PaymentModel(payment);
                 paymentModel.setId(id);
                 return paymentModel;
@@ -78,34 +80,36 @@ public class PaymentService {
 
     /**
      * Создание нового платежа
-     * @param  incPayment  входящая модель платежа
-     * @param  token  Токен пользователя полученный при входе
-     * @return      возвращает модель созданного платежа PaymentModel
-     * @see         PaymentModel
+     *
+     * @param incPayment входящая модель платежа
+     * @param token      Токен пользователя полученный при входе
+     * @return возвращает модель созданного платежа PaymentModel
+     * @see PaymentModel
      */
     public Object newPayment(PaymentModel incPayment, String token) {
         Payment payment = null;
-        PaymentModel outModel= null;
-        if(checkToken(token)){
+        PaymentModel outModel = null;
+        if (checkToken(token)) {
             String userId = userService.findByToken(token).getUser().getId();
             payment = fillPayment(incPayment, userId);
-             outModel = new PaymentModel(paymentRepository.save(payment));
-             outModel.setId(RestApiUtils.encodeId(outModel.getId(), userId));
+            outModel = new PaymentModel(paymentRepository.save(payment));
+            outModel.setId(RestApiUtils.encodeId(outModel.getId(), userId));
         }
         return outModel;
     }
 
     /**
      * Обновление существующего платежа
-     * @param  incPayment  входящая модель платежа
-     * @param  token  Токен пользователя полученный при входе
-     * @return      возвращает модель обновленного платежа PaymentModel
-     * @see         PaymentModel
+     *
+     * @param incPayment входящая модель платежа
+     * @param token      Токен пользователя полученный при входе
+     * @return возвращает модель обновленного платежа PaymentModel
+     * @see PaymentModel
      */
     public Object updatePayment(PaymentModel incPayment, String token) {
         Payment payment = null;
-        PaymentModel outModel= null;
-        if(checkToken(token)){
+        PaymentModel outModel = null;
+        if (checkToken(token)) {
             String userId = userService.findByToken(token).getUser().getId();
             payment = updPayment(incPayment, userId);
             outModel = new PaymentModel(paymentRepository.saveAndFlush(payment));
@@ -116,13 +120,14 @@ public class PaymentService {
 
     /**
      * Удаление существующего платежа
-     * @param  id     зашифрованный ID платежа
-     * @param  token  Токен пользователя полученный при входе
-     * @return      возвращает ResponseEntity со статусом HttpStatus.OK или HttpStatus.BAD_REQUEST
-     * @see         ResponseEntity
+     *
+     * @param id    зашифрованный ID платежа
+     * @param token Токен пользователя полученный при входе
+     * @return возвращает ResponseEntity со статусом HttpStatus.OK или HttpStatus.BAD_REQUEST
+     * @see ResponseEntity
      */
     public Object delPayment(String id, String token) {
-        if(checkToken(token)){
+        if (checkToken(token)) {
             String userId = userService.findByToken(token).getUser().getId();
             String decodedId = RestApiUtils.decodeId(id, userId);
             paymentRepository.delete(decodedId);
@@ -134,6 +139,7 @@ public class PaymentService {
 
     /**
      * Проверка что токен существует
+     *
      * @see UserService
      */
     private boolean checkToken(String token) {
@@ -162,14 +168,14 @@ public class PaymentService {
     private Payment updPayment(PaymentModel model, String userId) {
         String decodedId = RestApiUtils.decodeId(model.getId(), userId);
         Payment payment = paymentRepository.findByIdAndPayerId(decodedId, userId);
-        if (model.getAmount()!=null) {
+        if (model.getAmount() != null) {
             payment.setAmount(model.getAmount());
         }
-        if (model.getDocDate()!=null) {
+        if (model.getDocDate() != null) {
             payment.setDocDate(model.getDocDate());
         }
-        if (model.getCategory()!=null) {
-           // payment.setCategory(model.getCategory());
+        if (model.getCategory() != null) {
+            // payment.setCategory(model.getCategory());
         }
         return payment;
     }

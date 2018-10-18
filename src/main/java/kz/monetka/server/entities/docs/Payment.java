@@ -3,8 +3,7 @@ package kz.monetka.server.entities.docs;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import kz.monetka.server.entities.BaseEntity;
 import kz.monetka.server.entities.Comment;
-import kz.monetka.server.utils.FieldSize;
-import org.apache.log4j.Logger;
+import kz.monetka.server.utils.Consts;
 import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
@@ -18,9 +17,8 @@ import java.util.Date;
 @Entity
 @Table(name = "MONETKA_PAYMENTS")
 public class Payment extends BaseEntity {
-    private static final Logger LOGGER = Logger.getLogger(Payment.class);
 
-    @Column(length = FieldSize.UUID)
+    @Column(length = Consts.UUID)
     @Index(name = "IXS_PAYMENTS_PAYERID")
     @JsonIgnore
     private String payerId;
@@ -33,7 +31,7 @@ public class Payment extends BaseEntity {
     @JoinColumn(name = "categoryId")
     private PaymentCategory category;
 
-    @Column(precision = FieldSize.AMOUNT_PRECISION, scale = FieldSize.AMOUNT_SCALE)
+    @Column(precision = Consts.AMOUNT_PRECISION, scale = Consts.AMOUNT_SCALE)
     private BigDecimal amount;
 
     public PaymentCategory getCategory() {

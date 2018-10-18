@@ -20,9 +20,10 @@ public class RestApiUtils {
 
     /**
      * Шифрует ID платежей и не только
-     * @param  id     ID платежа
-     * @param  userId  ID пользователя
-     * @return  возвращает зашифрованый ID(String)
+     *
+     * @param id     ID платежа
+     * @param userId ID пользователя
+     * @return возвращает зашифрованый ID(String)
      */
     public static String encodeId(String id, String userId) {
         // идентификатор пользователя
@@ -34,9 +35,10 @@ public class RestApiUtils {
 
     /**
      * Расшифровка ID платежей и не только
-     * @param  encoded зашифрованный ID платежа
-     * @param  userId  ID пользователя
-     * @return  возвращает ID(String)
+     *
+     * @param encoded зашифрованный ID платежа
+     * @param userId  ID пользователя
+     * @return возвращает ID(String)
      */
     public static String decodeId(String encoded, String userId) {
         // идентификатор пользователя
@@ -52,9 +54,10 @@ public class RestApiUtils {
 
     /**
      * Алгоритм шифрования на основе xor
-     * @param  value что шифруем
-     * @param  key  чем шифруем
-     * @return  возвращает byte[]
+     *
+     * @param value что шифруем
+     * @param key   чем шифруем
+     * @return возвращает byte[]
      */
     private static byte[] xor(byte[] value, byte[] key) {
         int valueLength = value.length;

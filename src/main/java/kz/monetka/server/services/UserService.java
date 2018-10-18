@@ -27,6 +27,8 @@ public class UserService {
     private final String TOKEN_SEP = ":";
 
     @Autowired
+    private EmailService emailService;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private AuthTokenRepository tokenRepository;
@@ -34,14 +36,15 @@ public class UserService {
 
     /**
      * Создает и возвращает токен для доступа к API
-     * @param  login  Логин пользователя
-     * @return  возвращает новый или уже имещийся токен пользователя в формате <ID пользователя>:<ТОКЕН>
-     * @see         AuthToken
+     *
+     * @param login Логин пользователя
+     * @return возвращает новый или уже имещийся токен пользователя в формате <ID пользователя>:<ТОКЕН>
+     * @see AuthToken
      */
     public String createVerificationToken(String login) {
         User dbUser = userRepository.findBylogin(login);
         AuthToken oldToken = tokenRepository.findByUser(dbUser);
-        if(oldToken != null){
+        if (oldToken != null) {
             return dbUser.getId() + TOKEN_SEP + oldToken.getToken();
         }
         String token = UUID.randomUUID().toString();
@@ -81,6 +84,7 @@ public class UserService {
 
     /**
      * Создание нового пользователя с зашифрованным паролем
+     *
      * @see User
      */
     public void create(User user) {
@@ -145,7 +149,7 @@ public class UserService {
     public boolean remindPass(String login) {
         User dbUser = userRepository.findBylogin(login);
         if (dbUser != null && dbUser.isConfirmed()) {
-            //emailService.sendReminder(dbUser)
+            emailService.sendReminder(dbUser);
             return true;
         }
         return false;

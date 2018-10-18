@@ -53,7 +53,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     public List<User> findAll(Iterable<String> iterable);
 
     @Override
-    public long count() ;
+    public long count();
 
     @Override
     public void delete(String l);
@@ -71,7 +71,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     public void flush();
 
     @Override
-    public void deleteInBatch(Iterable<User> iterable) ;
+    public void deleteInBatch(Iterable<User> iterable);
 
     @Override
     public void deleteAllInBatch();

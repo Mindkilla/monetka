@@ -1,13 +1,10 @@
 package kz.monetka.server.models;
 
-import org.apache.log4j.Logger;
-
 /**
  * @author Andrey Smirnov
  * @date 23.02.2018
  */
 public class ResponseAnswer {
-    private static final Logger LOGGER = Logger.getLogger(ResponseAnswer.class);
 
     private String status;
     private String error;
@@ -28,9 +25,10 @@ public class ResponseAnswer {
         this.error = error;
     }
 
-    public ResponseAnswer(){}
+    public ResponseAnswer() {
+    }
 
-    public ResponseAnswer(String status, String error){
+    public ResponseAnswer(String status, String error) {
         this.status = status;
         this.error = error;
     }

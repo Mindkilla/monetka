@@ -34,4 +34,7 @@ public class ControllerUtils {
 
         return ResponseEntity.badRequest().body(result);
     }
+
+    private ControllerUtils() {
+    }
 }
